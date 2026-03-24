@@ -137,6 +137,8 @@ def apply_styles():
         font-size: 15px !important;
         padding: 10px 15px !important;
         transition: all 0.3s ease !important;
+        color: #1F4E79 !important;
+        background-color: white !important;
     }
 
     .stTextInput > div > div > input:focus {
@@ -193,11 +195,42 @@ def apply_styles():
     .stNumberInput > div > div > input {
         border: 2px solid #2E75B6 !important;
         border-radius: 8px !important;
+        color: #1F4E79 !important;
+        background-color: white !important;
     }
 
     /* ===== SPINNER ===== */
     .stSpinner > div {
         border-top-color: #2E75B6 !important;
     }
+
+    /* ===== FIX INPUT TEXT AND LABEL VISIBILITY ===== */
+    [data-testid="stNumberInput"] input {
+        color: #1F4E79 !important;
+        background-color: white !important;
+        font-weight: 600 !important;
+    }
+
+    [data-testid="stTextInput"] input {
+        color: #1F4E79 !important;
+        background-color: white !important;
+        font-weight: 600 !important;
+    }
+
+    .stNumberInput label {
+        color: #1F4E79 !important;
+        font-weight: 700 !important;
+    }
+
+    .stTextInput label {
+        color: #1F4E79 !important;
+        font-weight: 700 !important;
+    }
+
+    .stSlider label {
+        color: #1F4E79 !important;
+        font-weight: 700 !important;
+    }
+
     </style>
     """, unsafe_allow_html=True)
