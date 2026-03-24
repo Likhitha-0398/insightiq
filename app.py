@@ -6,11 +6,6 @@ from utils.styles import apply_styles
 
 apply_styles()
 
-st.sidebar.markdown(
-    '<p class="sidebar-title">📊 APP</p>',
-    unsafe_allow_html=True
-)
-
 # Auto-build database if it doesn't exist
 if not os.path.exists('database/insightiq.db'):
     import pandas as pd
