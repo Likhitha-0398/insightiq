@@ -1,6 +1,8 @@
 import streamlit as st
 import pickle
 import numpy as np
+from utils.styles import apply_styles
+apply_styles()
 import sys
 sys.path.append('.')
 

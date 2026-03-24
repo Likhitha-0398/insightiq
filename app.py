@@ -1,52 +1,6 @@
 import streamlit as st
-# Custom CSS styling
-st.markdown("""
-<style>
-    .main {
-        background-color: #f8f9fa;
-    }
-    .stMetric {
-        background-color: white;
-        padding: 15px;
-        border-radius: 10px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        border-left: 4px solid #2E75B6;
-    }
-    .stMetric label {
-        color: #666666 !important;
-        font-size: 14px !important;
-    }
-    .stMetric [data-testid="stMetricValue"] {
-        color: #2E75B6 !important;
-        font-size: 28px !important;
-        font-weight: bold !important;
-    }
-    h1 {
-        color: #1F4E79 !important;
-        font-size: 42px !important;
-    }
-    h2 {
-        color: #2E75B6 !important;
-    }
-    .stSidebar {
-        background-color: #1F4E79 !important;
-    }
-    .stSidebar [data-testid="stSidebarNav"] {
-        background-color: #1F4E79 !important;
-    }
-    .stSidebar a {
-        color: white !important;
-    }
-    .stInfo {
-        background-color: #E6F1FB !important;
-        border-left: 4px solid #2E75B6 !important;
-    }
-    .block-container {
-        padding-top: 2rem !important;
-        padding-bottom: 2rem !important;
-    }
-</style>
-""", unsafe_allow_html=True)
+from utils.styles import apply_styles
+apply_styles()
 import os
 import sys
 sys.path.append('.')

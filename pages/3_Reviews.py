@@ -1,5 +1,7 @@
 import streamlit as st
 import plotly.express as px
+from utils.styles import apply_styles
+apply_styles()
 import sys
 sys.path.append('.')
 from utils.db import run_query
