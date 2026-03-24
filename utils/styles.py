@@ -201,9 +201,3 @@ def apply_styles():
     }
     </style>
     """, unsafe_allow_html=True)
-
-    # Sidebar branding
-    st.sidebar.markdown(
-        '<p class="sidebar-title">📊 APP</p>',
-        unsafe_allow_html=True
-    )
