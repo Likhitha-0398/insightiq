@@ -1,15 +1,15 @@
 import streamlit as st
-from utils.styles import apply_styles
-apply_styles()
 import os
 import sys
 sys.path.append('.')
+from utils.styles import apply_styles
 
-    # Sidebar branding
-    st.sidebar.markdown(
-        '<p class="sidebar-title">📊 APP</p>',
-        unsafe_allow_html=True
-    )
+apply_styles()
+
+st.sidebar.markdown(
+    '<p class="sidebar-title">📊 APP</p>',
+    unsafe_allow_html=True
+)
 
 # Auto-build database if it doesn't exist
 if not os.path.exists('database/insightiq.db'):
