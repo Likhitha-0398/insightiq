@@ -200,4 +200,4 @@ def apply_styles():
         border-top-color: #2E75B6 !important;
     }
     </style>
-    """)
+    """, unsafe_allow_html=True)
