@@ -5,7 +5,7 @@ E-Commerce dataset, combining interactive analytics, machine learning,
 and AI-powered natural language querying.
 
 ## 🌐 Live Demo
-👉 [Click here to view the live dashboard](https://your-streamlit-url.streamlit.app)
+👉 [Click here to view the live dashboard](https://insightiq-7yu2fhb69wowgatgvd6ztg.streamlit.app/)
 
 ## 📌 Project Overview
 InsightIQ is a DSC 550 Master's Project at the University of Massachusetts 
@@ -76,7 +76,7 @@ insightiq/
 ```
 
 ## 👩‍💻 Author
-**Sree Likhitha** — MS in Data Science, UMass Dartmouth
+**Sree Likhitha Ninarapu** — MS in Data Science, UMass Dartmouth
 - GitHub: [@Likhitha-0398](https://github.com/Likhitha-0398)
 
 ## 📄 License
