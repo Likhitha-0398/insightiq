@@ -9,7 +9,7 @@ from utils.styles import apply_styles
 apply_styles()
 
 # If the database doesn't exist, build it from raw CSV files
-if not os.path.exists('database/insightiq.db'):
+if True:  # always retrain to use latest model settings
     import pandas as pd
     import sqlite3
 
