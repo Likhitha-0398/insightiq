@@ -1,6 +1,7 @@
 import streamlit as st
 import pickle
 import numpy as np
+import os
 import sys
 sys.path.append('.')
 from utils.styles import apply_styles
@@ -11,6 +12,12 @@ st.set_page_config(page_title="Delay Predictor", page_icon="🔮", layout="wide"
 st.title("🔮 Delivery Delay Predictor")
 st.markdown("---")
 st.markdown("Enter order details below to predict if the delivery will be **on time or late**.")
+
+# check if model exists before trying to load it
+# on first run it may still be training in app.py
+if not os.path.exists('database/delay_model.pkl'):
+    st.warning("⏳ Model is still being prepared. Please go to the Homepage first, wait 2-3 minutes, then come back here.")
+    st.stop()
 
 # Loading the pre-trained Random Forest model saved during initial setup
 with open('database/delay_model.pkl', 'rb') as f:
@@ -30,13 +37,13 @@ st.markdown("---")
 
 if st.button('🔮 Predict Delivery', use_container_width=True):
 
-    # Input must match the same feature order used during training
+    # input must match the same feature order used during training
     X = np.array([[estimated_days, payment_value, freight_value, price]])
 
     prob = model.predict_proba(X)[0][1]  # probability of being late
 
     # using 0.3 threshold instead of default 0.5
-    # this makes the model more sensitive to potential delays
+    # makes the model more sensitive to potential delays
     if prob >= 0.3:
         st.error(f"⚠️ HIGH RISK of late delivery — {prob:.0%} probability of delay")
         st.markdown("""
