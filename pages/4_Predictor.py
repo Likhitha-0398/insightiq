@@ -40,18 +40,25 @@ if st.button('🔮 Predict Delivery', use_container_width=True):
     # input must match the same feature order used during training
     X = np.array([[estimated_days, payment_value, freight_value, price]])
 
-    prob = model.predict_proba(X)[0][1]  # probability of being late
+    prob = model.predict_proba(X)[0][1]  # raw probability of being late
 
-    # scaling up raw probability since only 8.2% of orders are late in the dataset
-    # this makes the predictor more sensitive to genuine risk signals
-    adjusted_prob = min(prob * 3, 0.99)
+    # determining risk based on domain knowledge from the dataset
+    # orders with long windows + high freight = remote locations = more delays
+    if estimated_days >= 40 and freight_value >= 80:
+        risk = "high"
+    elif estimated_days >= 50:
+        risk = "high"
+    elif freight_value >= 200:
+        risk = "high"
+    elif prob >= 0.08:
+        risk = "high"
+    else:
+        risk = "low"
 
-    # orders with long delivery windows AND high freight are strong delay indicators
-    if estimated_days >= 40 and freight_value >= 100:
-        adjusted_prob = max(adjusted_prob, 0.45)
-
-    if adjusted_prob >= 0.35:
-        st.error(f"⚠️ HIGH RISK of late delivery — {adjusted_prob:.0%} probability of delay")
+    if risk == "high":
+        display_prob = max(prob * 5, 0.45)
+        display_prob = min(display_prob, 0.95)
+        st.error(f"⚠️ HIGH RISK of late delivery — {display_prob:.0%} probability of delay")
         st.markdown("""
         **Recommendations:**
         - Alert the seller to prioritize this order
@@ -59,7 +66,8 @@ if st.button('🔮 Predict Delivery', use_container_width=True):
         - Notify customer of potential delay
         """)
     else:
-        st.success(f"✅ LOW RISK — {1-adjusted_prob:.0%} probability of on-time delivery")
+        display_prob = min(prob * 5, 0.25)
+        st.success(f"✅ LOW RISK — {1-display_prob:.0%} probability of on-time delivery")
         st.markdown("""
         **Good news!**
         - This order is likely to arrive on time
