@@ -19,7 +19,7 @@ if not os.path.exists('database/delay_model.pkl'):
     st.warning("⏳ Model is still being prepared. Please go to the Homepage first, wait 2-3 minutes, then come back here.")
     st.stop()
 
-# Loading the pre-trained Random Forest model saved during initial setup
+# loading the pre-trained Random Forest model saved during initial setup
 with open('database/delay_model.pkl', 'rb') as f:
     model = pickle.load(f)
 
@@ -42,15 +42,15 @@ if st.button('🔮 Predict Delivery', use_container_width=True):
 
     prob = model.predict_proba(X)[0][1]  # probability of being late
 
-    # adjusting the raw probability to better reflect delivery risk
-    # the base dataset has 8.2% late rate so we scale accordingly
+    # scaling up raw probability since only 8.2% of orders are late in the dataset
+    # this makes the predictor more sensitive to genuine risk signals
     adjusted_prob = min(prob * 8, 0.99)
 
-    if estimated_days >= 40 or freight_value >= 100:
-        # high risk indicators based on domain knowledge
+    # orders with long delivery windows AND high freight are strong delay indicators
+    if estimated_days >= 40 and freight_value >= 100:
         adjusted_prob = max(adjusted_prob, 0.45)
 
-    if adjusted_prob >= 0.15:
+    if adjusted_prob >= 0.25:
         st.error(f"⚠️ HIGH RISK of late delivery — {adjusted_prob:.0%} probability of delay")
         st.markdown("""
         **Recommendations:**
