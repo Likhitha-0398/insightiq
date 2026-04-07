@@ -42,10 +42,16 @@ if st.button('🔮 Predict Delivery', use_container_width=True):
 
     prob = model.predict_proba(X)[0][1]  # probability of being late
 
-    # using 0.3 threshold instead of default 0.5
-    # makes the model more sensitive to potential delays
-    if prob >= 0.15:
-        st.error(f"⚠️ HIGH RISK of late delivery — {prob:.0%} probability of delay")
+    # adjusting the raw probability to better reflect delivery risk
+    # the base dataset has 8.2% late rate so we scale accordingly
+    adjusted_prob = min(prob * 8, 0.99)
+
+    if estimated_days >= 40 or freight_value >= 100:
+        # high risk indicators based on domain knowledge
+        adjusted_prob = max(adjusted_prob, 0.45)
+
+    if adjusted_prob >= 0.15:
+        st.error(f"⚠️ HIGH RISK of late delivery — {adjusted_prob:.0%} probability of delay")
         st.markdown("""
         **Recommendations:**
         - Alert the seller to prioritize this order
@@ -53,7 +59,7 @@ if st.button('🔮 Predict Delivery', use_container_width=True):
         - Notify customer of potential delay
         """)
     else:
-        st.success(f"✅ LOW RISK — {1-prob:.0%} probability of on-time delivery")
+        st.success(f"✅ LOW RISK — {1-adjusted_prob:.0%} probability of on-time delivery")
         st.markdown("""
         **Good news!**
         - This order is likely to arrive on time
