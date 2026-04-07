@@ -1,15 +1,18 @@
 import streamlit as st
 import plotly.express as px
-from utils.styles import apply_styles
-apply_styles()
 import sys
 sys.path.append('.')
+from utils.styles import apply_styles
 from utils.db import run_query
+
+apply_styles()
 
 st.set_page_config(page_title="Overview", page_icon="📈", layout="wide")
 st.title("📈 Business Overview")
 st.markdown("---")
 
+# Querying monthly aggregated data to understand revenue and order trends
+# Grouping by month helps capture seasonal patterns in business performance
 df = run_query('''
     SELECT strftime('%Y-%m', order_purchase_timestamp) as month,
            COUNT(*) as total_orders,
@@ -23,6 +26,8 @@ df = run_query('''
 col1, col2 = st.columns(2)
 
 with col1:
+    # Line chart to show how revenue changed over time
+    # makes it easy to spot growth trends and peak periods like Nov 2017
     fig = px.line(df, x='month', y='revenue',
         title='Monthly Revenue (R$)',
         labels={'month': 'Month', 'revenue': 'Revenue (R$)'})
@@ -30,6 +35,8 @@ with col1:
     st.plotly_chart(fig, use_container_width=True)
 
 with col2:
+    # Bar chart to compare order volume month by month
+    # useful for spotting demand spikes and slow periods
     fig2 = px.bar(df, x='month', y='total_orders',
         title='Monthly Order Volume',
         labels={'month': 'Month', 'total_orders': 'Orders'},
@@ -37,6 +44,8 @@ with col2:
     st.plotly_chart(fig2, use_container_width=True)
 
 st.markdown("### Key Insights")
+
+# summary metrics pulled from the data analysis
 col3, col4, col5 = st.columns(3)
 col3.metric("Peak Revenue Month", "Nov 2017")
 col4.metric("Best Order Month", "Nov 2017")

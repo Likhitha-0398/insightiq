@@ -8,6 +8,7 @@ from sklearn.metrics import accuracy_score, classification_report
 
 conn = sqlite3.connect('database/insightiq.db')
 
+# Joining orders, payments and items to get features that influence delivery time
 df = pd.read_sql_query('''
     SELECT
         julianday(o.order_estimated_delivery_date)
@@ -26,15 +27,20 @@ df = pd.read_sql_query('''
 conn.close()
 
 df = df.dropna()
+
+# 1 = late, 0 = on time — this is what the model learns to predict
 df['late'] = (df['actual_days'] > df['estimated_days']).astype(int)
 
 features = ['estimated_days', 'payment_value', 'freight_value', 'price']
 X = df[features]
 y = df['late']
 
+# fixed random state so results are reproducible every run
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42)
 
+# balanced weight helps the model handle the class imbalance
+# only ~8% of orders are late so without this it would just predict on-time always
 model = RandomForestClassifier(
     n_estimators=100,
     class_weight='balanced',
@@ -47,6 +53,7 @@ print(f"✅ Model accuracy: {acc:.2%}")
 print("\n📊 Classification Report:")
 print(classification_report(y_test, model.predict(X_test)))
 
+# saving the trained model so the dashboard loads it instantly without retraining
 os.makedirs("database", exist_ok=True)
 with open('database/delay_model.pkl', 'wb') as f:
     pickle.dump(model, f)

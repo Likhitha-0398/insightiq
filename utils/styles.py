@@ -1,6 +1,10 @@
 import streamlit as st
 
 def apply_styles():
+    # Applying custom CSS styles to improve UI/UX of the dashboard.
+    # The goal is to make the interface clean, consistent, and visually appealing
+    # while keeping it simple for users to navigate.
+
     st.markdown("""
     <style>
     /* ===== IMPORT FONT ===== */

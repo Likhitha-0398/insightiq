@@ -7,6 +7,7 @@ DB_PATH = "database/insightiq.db"
 
 os.makedirs("database", exist_ok=True)
 
+# mapping each CSV file to its table name in the database
 files = {
     "orders":       "olist_orders_dataset.csv",
     "order_items":  "olist_order_items_dataset.csv",
