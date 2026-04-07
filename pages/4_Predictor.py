@@ -44,13 +44,13 @@ if st.button('🔮 Predict Delivery', use_container_width=True):
 
     # scaling up raw probability since only 8.2% of orders are late in the dataset
     # this makes the predictor more sensitive to genuine risk signals
-    adjusted_prob = min(prob * 8, 0.99)
+    adjusted_prob = min(prob * 3, 0.99)
 
     # orders with long delivery windows AND high freight are strong delay indicators
     if estimated_days >= 40 and freight_value >= 100:
         adjusted_prob = max(adjusted_prob, 0.45)
 
-    if adjusted_prob >= 0.25:
+    if adjusted_prob >= 0.35:
         st.error(f"⚠️ HIGH RISK of late delivery — {adjusted_prob:.0%} probability of delay")
         st.markdown("""
         **Recommendations:**
