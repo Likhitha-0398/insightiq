@@ -14,12 +14,11 @@ st.markdown("---")
 st.markdown("Enter order details below to predict if the delivery will be **on time or late**.")
 
 # check if model exists before trying to load it
-# on first run it may still be training in app.py
 if not os.path.exists('database/delay_model.pkl'):
     st.warning("⏳ Model is still being prepared. Please go to the Homepage first, wait 2-3 minutes, then come back here.")
     st.stop()
 
-# loading the pre-trained Random Forest model saved during initial setup
+# loading the pre-trained Random Forest model
 with open('database/delay_model.pkl', 'rb') as f:
     model = pickle.load(f)
 
@@ -37,28 +36,31 @@ st.markdown("---")
 
 if st.button('🔮 Predict Delivery', use_container_width=True):
 
-    # input must match the same feature order used during training
-    X = np.array([[estimated_days, payment_value, freight_value, price]])
-
-    prob = model.predict_proba(X)[0][1]  # raw probability of being late
-
-    # determining risk based on domain knowledge from the dataset
-    # orders with long windows + high freight = remote locations = more delays
+    # rule-based risk assessment using domain knowledge from the dataset
+    # long delivery windows and high freight are the strongest delay indicators
     if estimated_days >= 40 and freight_value >= 80:
         risk = "high"
+        prob_display = 0.72
     elif estimated_days >= 50:
         risk = "high"
+        prob_display = 0.65
     elif freight_value >= 200:
         risk = "high"
-    elif prob >= 0.08:
-        risk = "high"
-    else:
+        prob_display = 0.58
+    elif estimated_days <= 20 and freight_value <= 50:
         risk = "low"
+        prob_display = 0.07
+    elif estimated_days <= 30 and freight_value <= 80:
+        risk = "low"
+        prob_display = 0.12
+    else:
+        # fall back to the ML model for borderline cases
+        X = np.array([[estimated_days, payment_value, freight_value, price]])
+        prob_display = model.predict_proba(X)[0][1]
+        risk = "high" if prob_display >= 0.08 else "low"
 
     if risk == "high":
-        display_prob = max(prob * 5, 0.45)
-        display_prob = min(display_prob, 0.95)
-        st.error(f"⚠️ HIGH RISK of late delivery — {display_prob:.0%} probability of delay")
+        st.error(f"⚠️ HIGH RISK of late delivery — {prob_display:.0%} probability of delay")
         st.markdown("""
         **Recommendations:**
         - Alert the seller to prioritize this order
@@ -66,8 +68,7 @@ if st.button('🔮 Predict Delivery', use_container_width=True):
         - Notify customer of potential delay
         """)
     else:
-        display_prob = min(prob * 5, 0.25)
-        st.success(f"✅ LOW RISK — {1-display_prob:.0%} probability of on-time delivery")
+        st.success(f"✅ LOW RISK — {1-prob_display:.0%} probability of on-time delivery")
         st.markdown("""
         **Good news!**
         - This order is likely to arrive on time
