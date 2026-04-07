@@ -33,10 +33,11 @@ if st.button('🔮 Predict Delivery', use_container_width=True):
     # Input must match the same feature order used during training
     X = np.array([[estimated_days, payment_value, freight_value, price]])
 
-    pred = model.predict(X)[0]
     prob = model.predict_proba(X)[0][1]  # probability of being late
 
-    if pred == 1:
+    # using 0.3 threshold instead of default 0.5
+    # this makes the model more sensitive to potential delays
+    if prob >= 0.3:
         st.error(f"⚠️ HIGH RISK of late delivery — {prob:.0%} probability of delay")
         st.markdown("""
         **Recommendations:**

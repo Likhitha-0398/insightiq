@@ -42,9 +42,11 @@ X_train, X_test, y_train, y_test = train_test_split(
 # balanced weight helps the model handle the class imbalance
 # only ~8% of orders are late so without this it would just predict on-time always
 model = RandomForestClassifier(
-    n_estimators=100,
-    class_weight='balanced',
-    random_state=42
+    n_estimators=200,
+    class_weight={0: 1, 1: 8},
+    random_state=42,
+    min_samples_leaf=3,
+    max_depth=18
 )
 model.fit(X_train, y_train)
 
