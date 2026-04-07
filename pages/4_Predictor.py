@@ -44,7 +44,7 @@ if st.button('🔮 Predict Delivery', use_container_width=True):
 
     # using 0.3 threshold instead of default 0.5
     # makes the model more sensitive to potential delays
-    if prob >= 0.3:
+    if prob >= 0.15:
         st.error(f"⚠️ HIGH RISK of late delivery — {prob:.0%} probability of delay")
         st.markdown("""
         **Recommendations:**
