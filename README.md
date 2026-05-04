@@ -36,7 +36,7 @@ The goal was not just to visualize e-commerce data, but to make it more **intera
 - 📈 **Business Overview** — Monthly revenue and order volume trends
 - 🚚 **Delivery Performance** — Delivery time analysis and distribution
 - ⭐ **Customer Reviews** — Review score distribution and insights
-- 🔮 **Delay Predictor** — ML model to predict delivery delays (~92.66% accuracy)
+- 🔮 **Delay Predictor** — ML model to predict delivery delays (~90.25% accuracy)
 - 🤖 **AI Insights** — Natural language Q&A powered by OpenAI GPT
 
 ---
