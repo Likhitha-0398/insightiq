@@ -1,4 +1,4 @@
-# 📊 InsightIQ — AI-Powered E-Commerce BI Dashboard
+# 📊 InsightIQ — An AI-Powered E-Commerce BI Dashboard
 
 An intelligent Business Intelligence platform built on the Olist Brazilian 
 E-Commerce dataset, combining interactive analytics, machine learning, 
